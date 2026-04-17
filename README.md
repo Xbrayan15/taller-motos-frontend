@@ -1,70 +1,125 @@
-# Getting Started with Create React App
+# 🏍️ Taller de Motos - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend de React para la gestión de un taller de motocicletas.
 
-## Available Scripts
+## 🚀 Inicio rápido
 
-In the project directory, you can run:
+### 1. Instalar dependencias (ya hecho)
 
-### `npm start`
+```bash
+npm install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 2. Configurar variables de entorno
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+El archivo `.env` ya está configurado:
 
-### `npm test`
+```
+REACT_APP_API_URL=http://localhost:8000
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3. Iniciar el servidor de desarrollo
 
-### `npm run build`
+```bash
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Se abrirá automáticamente en `http://localhost:3000`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📁 Estructura del proyecto
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+src/
+├── components/          # Componentes reutilizables
+│   ├── Layout.js       # Layout principal con sidebar
+│   └── PrivateRoute.js # Rutas protegidas
+├── context/            # Context API
+│   └── AuthContext.js  # Autenticación y estado del usuario
+├── pages/              # Páginas principales
+│   ├── Login.js        # Login y registro
+│   ├── Pilotos.js      # Gestión de pilotos
+│   ├── Motocicletas.js # Gestión de motocicletas
+│   ├── Items.js        # Gestión de servicios
+│   ├── Estados.js      # Estados de trabajos
+│   ├── Usuarios.js     # Gestión de usuarios (admin)
+│   └── Configuracion.js # Configuración
+├── services/           # Servicios de API
+│   └── api.js          # Cliente Axios
+├── styles/             # Estilos CSS
+│   └── index.css       # Estilos globales
+├── config.js           # Configuración de la app
+└── App.js              # Componente raíz
+```
 
-### `npm run eject`
+## 🔐 Autenticación
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Login
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Accede a `http://localhost:3000/login`
+- Usa credenciales válidas o regístrate como nuevo usuario
+- El token se guarda en `localStorage`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Roles
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **Admin**: Acceso completo, puede gestionar usuarios
+- **Mecánico**: Acceso limitado, solo puede ver datos
 
-## Learn More
+## 📡 API Integration
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+El cliente Axios está configurado en `src/services/api.js`:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Agrega automáticamente el token a cada request
+- Redirige a login si el token expira (401)
+- Intercepta errores de respuesta
 
-### Code Splitting
+## 🎨 Diseño
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **Barra lateral**: Navegación principal
+- **Header**: Información del usuario y título de página
+- **Content**: Área principal con el contenido
+- **Responsive**: Se adapta a mobile
 
-### Analyzing the Bundle Size
+## 🔧 Características
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- ✅ Login y registro
+- ✅ Gestión de pilotos (CRUD)
+- ✅ Gestión de motocicletas (CRUD)
+- ✅ Gestión de servicios (CRUD)
+- ✅ Gestión de usuarios (solo admin)
+- ✅ Sistema de rutas protegidas
+- ✅ Autenticación con JWT
+- ✅ Interfaz responsiva
 
-### Making a Progressive Web App
+## 📦 Dependencias principales
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **React**: Framework UI
+- **React Router**: Enrutamiento
+- **Axios**: Cliente HTTP
+- **Lucide React**: Iconos
 
-### Advanced Configuration
+## 🚀 Build para producción
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm run build
+```
 
-### Deployment
+Genera los archivos optimizados en la carpeta `build/`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🐛 Troubleshooting
 
-### `npm run build` fails to minify
+### Error: "API connection refused"
+- Verifica que el backend esté corriendo en `http://localhost:8000`
+- Comprueba el valor de `REACT_APP_API_URL` en `.env`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Error: "Token inválido"
+- Limpia el localStorage: `localStorage.clear()`
+- Vuelve a hacer login
+
+### Error: "CORS error"
+- Verifica que el backend tenga CORS habilitado
+
+---
+
+**Backend**: http://localhost:8000  
+**Frontend**: http://localhost:3000  
+**Documentación API**: http://localhost:8000/docs

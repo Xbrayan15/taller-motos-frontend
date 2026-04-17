@@ -1,0 +1,1678 @@
+﻿{
+    "openapi":  "3.1.0",
+    "info":  {
+                 "title":  "API Taller de Motos",
+                 "description":  "API para gestionar un taller de motos",
+                 "version":  "1.0.0"
+             },
+    "paths":  {
+                  "/api/usuarios/registro":  {
+                                                 "post":  {
+                                                              "tags":  [
+                                                                           "Usuarios"
+                                                                       ],
+                                                              "summary":  "Registro",
+                                                              "description":  "Registrar un nuevo usuario",
+                                                              "operationId":  "registro_api_usuarios_registro_post",
+                                                              "requestBody":  {
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "$ref":  "#/components/schemas/UsuarioCreate"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              },
+                                                                                  "required":  true
+                                                                              },
+                                                              "responses":  {
+                                                                                "200":  {
+                                                                                            "description":  "Successful Response",
+                                                                                            "content":  {
+                                                                                                            "application/json":  {
+                                                                                                                                     "schema":  {
+                                                                                                                                                    "$ref":  "#/components/schemas/UsuarioResponse"
+                                                                                                                                                }
+                                                                                                                                 }
+                                                                                                        }
+                                                                                        },
+                                                                                "422":  {
+                                                                                            "description":  "Validation Error",
+                                                                                            "content":  {
+                                                                                                            "application/json":  {
+                                                                                                                                     "schema":  {
+                                                                                                                                                    "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                }
+                                                                                                                                 }
+                                                                                                        }
+                                                                                        }
+                                                                            }
+                                                          }
+                                             },
+                  "/api/usuarios/login":  {
+                                              "post":  {
+                                                           "tags":  [
+                                                                        "Usuarios"
+                                                                    ],
+                                                           "summary":  "Login",
+                                                           "description":  "Iniciar sesiÃ³n y obtener token",
+                                                           "operationId":  "login_api_usuarios_login_post",
+                                                           "requestBody":  {
+                                                                               "content":  {
+                                                                                               "application/json":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "$ref":  "#/components/schemas/UsuarioLogin"
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                           },
+                                                                               "required":  true
+                                                                           },
+                                                           "responses":  {
+                                                                             "200":  {
+                                                                                         "description":  "Successful Response",
+                                                                                         "content":  {
+                                                                                                         "application/json":  {
+                                                                                                                                  "schema":  {
+                                                                                                                                                 "$ref":  "#/components/schemas/Token"
+                                                                                                                                             }
+                                                                                                                              }
+                                                                                                     }
+                                                                                     },
+                                                                             "422":  {
+                                                                                         "description":  "Validation Error",
+                                                                                         "content":  {
+                                                                                                         "application/json":  {
+                                                                                                                                  "schema":  {
+                                                                                                                                                 "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                             }
+                                                                                                                              }
+                                                                                                     }
+                                                                                     }
+                                                                         }
+                                                       }
+                                          },
+                  "/api/usuarios/me":  {
+                                           "get":  {
+                                                       "tags":  [
+                                                                    "Usuarios"
+                                                                ],
+                                                       "summary":  "Get Me",
+                                                       "description":  "Obtener informaciÃ³n del usuario actual",
+                                                       "operationId":  "get_me_api_usuarios_me_get",
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "Successful Response",
+                                                                                     "content":  {
+                                                                                                     "application/json":  {
+                                                                                                                              "schema":  {
+                                                                                                                                             "$ref":  "#/components/schemas/UsuarioResponse"
+                                                                                                                                         }
+                                                                                                                          }
+                                                                                                 }
+                                                                                 }
+                                                                     },
+                                                       "security":  [
+                                                                        {
+                                                                            "HTTPBearer":  [
+
+                                                                                           ]
+                                                                        }
+                                                                    ]
+                                                   }
+                                       },
+                  "/api/usuarios/":  {
+                                         "get":  {
+                                                     "tags":  [
+                                                                  "Usuarios"
+                                                              ],
+                                                     "summary":  "Get Usuarios",
+                                                     "description":  "Obtener todos los usuarios (solo admin)",
+                                                     "operationId":  "get_usuarios_api_usuarios__get",
+                                                     "responses":  {
+                                                                       "200":  {
+                                                                                   "description":  "Successful Response",
+                                                                                   "content":  {
+                                                                                                   "application/json":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "items":  {
+                                                                                                                                                         "$ref":  "#/components/schemas/UsuarioResponse"
+                                                                                                                                                     },
+                                                                                                                                           "type":  "array",
+                                                                                                                                           "title":  "Response Get Usuarios Api Usuarios  Get"
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                               }
+                                                                               }
+                                                                   },
+                                                     "security":  [
+                                                                      {
+                                                                          "HTTPBearer":  [
+
+                                                                                         ]
+                                                                      }
+                                                                  ]
+                                                 }
+                                     },
+                  "/api/usuarios/{user_id}":  {
+                                                  "delete":  {
+                                                                 "tags":  [
+                                                                              "Usuarios"
+                                                                          ],
+                                                                 "summary":  "Delete Usuario Endpoint",
+                                                                 "description":  "Eliminar un usuario (solo admin)",
+                                                                 "operationId":  "delete_usuario_endpoint_api_usuarios__user_id__delete",
+                                                                 "security":  [
+                                                                                  {
+                                                                                      "HTTPBearer":  [
+
+                                                                                                     ]
+                                                                                  }
+                                                                              ],
+                                                                 "parameters":  [
+                                                                                    {
+                                                                                        "name":  "user_id",
+                                                                                        "in":  "path",
+                                                                                        "required":  true,
+                                                                                        "schema":  {
+                                                                                                       "type":  "integer",
+                                                                                                       "title":  "User Id"
+                                                                                                   }
+                                                                                    }
+                                                                                ],
+                                                                 "responses":  {
+                                                                                   "204":  {
+                                                                                               "description":  "Successful Response"
+                                                                                           },
+                                                                                   "422":  {
+                                                                                               "description":  "Validation Error",
+                                                                                               "content":  {
+                                                                                                               "application/json":  {
+                                                                                                                                        "schema":  {
+                                                                                                                                                       "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                   }
+                                                                                                                                    }
+                                                                                                           }
+                                                                                           }
+                                                                               }
+                                                             }
+                                              },
+                  "/api/pilotos/":  {
+                                        "get":  {
+                                                    "tags":  [
+                                                                 "Pilotos"
+                                                             ],
+                                                    "summary":  "Get Pilotos",
+                                                    "description":  "Obtener todos los pilotos",
+                                                    "operationId":  "get_pilotos_api_pilotos__get",
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "Successful Response",
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "items":  {
+                                                                                                                                                        "$ref":  "#/components/schemas/PilotoResponse"
+                                                                                                                                                    },
+                                                                                                                                          "type":  "array",
+                                                                                                                                          "title":  "Response Get Pilotos Api Pilotos  Get"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              }
+                                                                              }
+                                                                  },
+                                                    "security":  [
+                                                                     {
+                                                                         "HTTPBearer":  [
+
+                                                                                        ]
+                                                                     }
+                                                                 ]
+                                                },
+                                        "post":  {
+                                                     "tags":  [
+                                                                  "Pilotos"
+                                                              ],
+                                                     "summary":  "Create Piloto Endpoint",
+                                                     "description":  "Crear un nuevo piloto",
+                                                     "operationId":  "create_piloto_endpoint_api_pilotos__post",
+                                                     "requestBody":  {
+                                                                         "content":  {
+                                                                                         "application/json":  {
+                                                                                                                  "schema":  {
+                                                                                                                                 "$ref":  "#/components/schemas/PilotoCreate"
+                                                                                                                             }
+                                                                                                              }
+                                                                                     },
+                                                                         "required":  true
+                                                                     },
+                                                     "responses":  {
+                                                                       "200":  {
+                                                                                   "description":  "Successful Response",
+                                                                                   "content":  {
+                                                                                                   "application/json":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "$ref":  "#/components/schemas/PilotoResponse"
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                               }
+                                                                               },
+                                                                       "422":  {
+                                                                                   "description":  "Validation Error",
+                                                                                   "content":  {
+                                                                                                   "application/json":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                               }
+                                                                               }
+                                                                   },
+                                                     "security":  [
+                                                                      {
+                                                                          "HTTPBearer":  [
+
+                                                                                         ]
+                                                                      }
+                                                                  ]
+                                                 }
+                                    },
+                  "/api/pilotos/{piloto_id}":  {
+                                                   "get":  {
+                                                               "tags":  [
+                                                                            "Pilotos"
+                                                                        ],
+                                                               "summary":  "Get Piloto Endpoint",
+                                                               "description":  "Obtener un piloto por ID",
+                                                               "operationId":  "get_piloto_endpoint_api_pilotos__piloto_id__get",
+                                                               "security":  [
+                                                                                {
+                                                                                    "HTTPBearer":  [
+
+                                                                                                   ]
+                                                                                }
+                                                                            ],
+                                                               "parameters":  [
+                                                                                  {
+                                                                                      "name":  "piloto_id",
+                                                                                      "in":  "path",
+                                                                                      "required":  true,
+                                                                                      "schema":  {
+                                                                                                     "type":  "integer",
+                                                                                                     "title":  "Piloto Id"
+                                                                                                 }
+                                                                                  }
+                                                                              ],
+                                                               "responses":  {
+                                                                                 "200":  {
+                                                                                             "description":  "Successful Response",
+                                                                                             "content":  {
+                                                                                                             "application/json":  {
+                                                                                                                                      "schema":  {
+                                                                                                                                                     "$ref":  "#/components/schemas/PilotoResponse"
+                                                                                                                                                 }
+                                                                                                                                  }
+                                                                                                         }
+                                                                                         },
+                                                                                 "422":  {
+                                                                                             "description":  "Validation Error",
+                                                                                             "content":  {
+                                                                                                             "application/json":  {
+                                                                                                                                      "schema":  {
+                                                                                                                                                     "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                 }
+                                                                                                                                  }
+                                                                                                         }
+                                                                                         }
+                                                                             }
+                                                           },
+                                                   "put":  {
+                                                               "tags":  [
+                                                                            "Pilotos"
+                                                                        ],
+                                                               "summary":  "Update Piloto Endpoint",
+                                                               "description":  "Actualizar un piloto",
+                                                               "operationId":  "update_piloto_endpoint_api_pilotos__piloto_id__put",
+                                                               "security":  [
+                                                                                {
+                                                                                    "HTTPBearer":  [
+
+                                                                                                   ]
+                                                                                }
+                                                                            ],
+                                                               "parameters":  [
+                                                                                  {
+                                                                                      "name":  "piloto_id",
+                                                                                      "in":  "path",
+                                                                                      "required":  true,
+                                                                                      "schema":  {
+                                                                                                     "type":  "integer",
+                                                                                                     "title":  "Piloto Id"
+                                                                                                 }
+                                                                                  }
+                                                                              ],
+                                                               "requestBody":  {
+                                                                                   "required":  true,
+                                                                                   "content":  {
+                                                                                                   "application/json":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "$ref":  "#/components/schemas/PilotoUpdate"
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                               }
+                                                                               },
+                                                               "responses":  {
+                                                                                 "200":  {
+                                                                                             "description":  "Successful Response",
+                                                                                             "content":  {
+                                                                                                             "application/json":  {
+                                                                                                                                      "schema":  {
+                                                                                                                                                     "$ref":  "#/components/schemas/PilotoResponse"
+                                                                                                                                                 }
+                                                                                                                                  }
+                                                                                                         }
+                                                                                         },
+                                                                                 "422":  {
+                                                                                             "description":  "Validation Error",
+                                                                                             "content":  {
+                                                                                                             "application/json":  {
+                                                                                                                                      "schema":  {
+                                                                                                                                                     "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                 }
+                                                                                                                                  }
+                                                                                                         }
+                                                                                         }
+                                                                             }
+                                                           },
+                                                   "delete":  {
+                                                                  "tags":  [
+                                                                               "Pilotos"
+                                                                           ],
+                                                                  "summary":  "Delete Piloto Endpoint",
+                                                                  "description":  "Eliminar un piloto",
+                                                                  "operationId":  "delete_piloto_endpoint_api_pilotos__piloto_id__delete",
+                                                                  "security":  [
+                                                                                   {
+                                                                                       "HTTPBearer":  [
+
+                                                                                                      ]
+                                                                                   }
+                                                                               ],
+                                                                  "parameters":  [
+                                                                                     {
+                                                                                         "name":  "piloto_id",
+                                                                                         "in":  "path",
+                                                                                         "required":  true,
+                                                                                         "schema":  {
+                                                                                                        "type":  "integer",
+                                                                                                        "title":  "Piloto Id"
+                                                                                                    }
+                                                                                     }
+                                                                                 ],
+                                                                  "responses":  {
+                                                                                    "204":  {
+                                                                                                "description":  "Successful Response"
+                                                                                            },
+                                                                                    "422":  {
+                                                                                                "description":  "Validation Error",
+                                                                                                "content":  {
+                                                                                                                "application/json":  {
+                                                                                                                                         "schema":  {
+                                                                                                                                                        "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                    }
+                                                                                                                                     }
+                                                                                                            }
+                                                                                            }
+                                                                                }
+                                                              }
+                                               },
+                  "/api/motocicletas/":  {
+                                             "get":  {
+                                                         "tags":  [
+                                                                      "Motocicletas"
+                                                                  ],
+                                                         "summary":  "Get Motocicletas",
+                                                         "description":  "Obtener todas las motocicletas",
+                                                         "operationId":  "get_motocicletas_api_motocicletas__get",
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "Successful Response",
+                                                                                       "content":  {
+                                                                                                       "application/json":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "items":  {
+                                                                                                                                                             "$ref":  "#/components/schemas/MotocicletaResponse"
+                                                                                                                                                         },
+                                                                                                                                               "type":  "array",
+                                                                                                                                               "title":  "Response Get Motocicletas Api Motocicletas  Get"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                   }
+                                                                                   }
+                                                                       },
+                                                         "security":  [
+                                                                          {
+                                                                              "HTTPBearer":  [
+
+                                                                                             ]
+                                                                          }
+                                                                      ]
+                                                     },
+                                             "post":  {
+                                                          "tags":  [
+                                                                       "Motocicletas"
+                                                                   ],
+                                                          "summary":  "Create Motocicleta Endpoint",
+                                                          "description":  "Crear una nueva motocicleta",
+                                                          "operationId":  "create_motocicleta_endpoint_api_motocicletas__post",
+                                                          "requestBody":  {
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/MotocicletaCreate"
+                                                                                                                                  }
+                                                                                                                   }
+                                                                                          },
+                                                                              "required":  true
+                                                                          },
+                                                          "responses":  {
+                                                                            "200":  {
+                                                                                        "description":  "Successful Response",
+                                                                                        "content":  {
+                                                                                                        "application/json":  {
+                                                                                                                                 "schema":  {
+                                                                                                                                                "$ref":  "#/components/schemas/MotocicletaResponse"
+                                                                                                                                            }
+                                                                                                                             }
+                                                                                                    }
+                                                                                    },
+                                                                            "422":  {
+                                                                                        "description":  "Validation Error",
+                                                                                        "content":  {
+                                                                                                        "application/json":  {
+                                                                                                                                 "schema":  {
+                                                                                                                                                "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                            }
+                                                                                                                             }
+                                                                                                    }
+                                                                                    }
+                                                                        },
+                                                          "security":  [
+                                                                           {
+                                                                               "HTTPBearer":  [
+
+                                                                                              ]
+                                                                           }
+                                                                       ]
+                                                      }
+                                         },
+                  "/api/motocicletas/{motocicleta_id}":  {
+                                                             "get":  {
+                                                                         "tags":  [
+                                                                                      "Motocicletas"
+                                                                                  ],
+                                                                         "summary":  "Get Motocicleta Endpoint",
+                                                                         "description":  "Obtener una motocicleta por ID",
+                                                                         "operationId":  "get_motocicleta_endpoint_api_motocicletas__motocicleta_id__get",
+                                                                         "security":  [
+                                                                                          {
+                                                                                              "HTTPBearer":  [
+
+                                                                                                             ]
+                                                                                          }
+                                                                                      ],
+                                                                         "parameters":  [
+                                                                                            {
+                                                                                                "name":  "motocicleta_id",
+                                                                                                "in":  "path",
+                                                                                                "required":  true,
+                                                                                                "schema":  {
+                                                                                                               "type":  "integer",
+                                                                                                               "title":  "Motocicleta Id"
+                                                                                                           }
+                                                                                            }
+                                                                                        ],
+                                                                         "responses":  {
+                                                                                           "200":  {
+                                                                                                       "description":  "Successful Response",
+                                                                                                       "content":  {
+                                                                                                                       "application/json":  {
+                                                                                                                                                "schema":  {
+                                                                                                                                                               "$ref":  "#/components/schemas/MotocicletaResponse"
+                                                                                                                                                           }
+                                                                                                                                            }
+                                                                                                                   }
+                                                                                                   },
+                                                                                           "422":  {
+                                                                                                       "description":  "Validation Error",
+                                                                                                       "content":  {
+                                                                                                                       "application/json":  {
+                                                                                                                                                "schema":  {
+                                                                                                                                                               "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                           }
+                                                                                                                                            }
+                                                                                                                   }
+                                                                                                   }
+                                                                                       }
+                                                                     },
+                                                             "put":  {
+                                                                         "tags":  [
+                                                                                      "Motocicletas"
+                                                                                  ],
+                                                                         "summary":  "Update Motocicleta Endpoint",
+                                                                         "description":  "Actualizar una motocicleta",
+                                                                         "operationId":  "update_motocicleta_endpoint_api_motocicletas__motocicleta_id__put",
+                                                                         "security":  [
+                                                                                          {
+                                                                                              "HTTPBearer":  [
+
+                                                                                                             ]
+                                                                                          }
+                                                                                      ],
+                                                                         "parameters":  [
+                                                                                            {
+                                                                                                "name":  "motocicleta_id",
+                                                                                                "in":  "path",
+                                                                                                "required":  true,
+                                                                                                "schema":  {
+                                                                                                               "type":  "integer",
+                                                                                                               "title":  "Motocicleta Id"
+                                                                                                           }
+                                                                                            }
+                                                                                        ],
+                                                                         "requestBody":  {
+                                                                                             "required":  true,
+                                                                                             "content":  {
+                                                                                                             "application/json":  {
+                                                                                                                                      "schema":  {
+                                                                                                                                                     "$ref":  "#/components/schemas/MotocicletaUpdate"
+                                                                                                                                                 }
+                                                                                                                                  }
+                                                                                                         }
+                                                                                         },
+                                                                         "responses":  {
+                                                                                           "200":  {
+                                                                                                       "description":  "Successful Response",
+                                                                                                       "content":  {
+                                                                                                                       "application/json":  {
+                                                                                                                                                "schema":  {
+                                                                                                                                                               "$ref":  "#/components/schemas/MotocicletaResponse"
+                                                                                                                                                           }
+                                                                                                                                            }
+                                                                                                                   }
+                                                                                                   },
+                                                                                           "422":  {
+                                                                                                       "description":  "Validation Error",
+                                                                                                       "content":  {
+                                                                                                                       "application/json":  {
+                                                                                                                                                "schema":  {
+                                                                                                                                                               "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                           }
+                                                                                                                                            }
+                                                                                                                   }
+                                                                                                   }
+                                                                                       }
+                                                                     },
+                                                             "delete":  {
+                                                                            "tags":  [
+                                                                                         "Motocicletas"
+                                                                                     ],
+                                                                            "summary":  "Delete Motocicleta Endpoint",
+                                                                            "description":  "Eliminar una motocicleta",
+                                                                            "operationId":  "delete_motocicleta_endpoint_api_motocicletas__motocicleta_id__delete",
+                                                                            "security":  [
+                                                                                             {
+                                                                                                 "HTTPBearer":  [
+
+                                                                                                                ]
+                                                                                             }
+                                                                                         ],
+                                                                            "parameters":  [
+                                                                                               {
+                                                                                                   "name":  "motocicleta_id",
+                                                                                                   "in":  "path",
+                                                                                                   "required":  true,
+                                                                                                   "schema":  {
+                                                                                                                  "type":  "integer",
+                                                                                                                  "title":  "Motocicleta Id"
+                                                                                                              }
+                                                                                               }
+                                                                                           ],
+                                                                            "responses":  {
+                                                                                              "204":  {
+                                                                                                          "description":  "Successful Response"
+                                                                                                      },
+                                                                                              "422":  {
+                                                                                                          "description":  "Validation Error",
+                                                                                                          "content":  {
+                                                                                                                          "application/json":  {
+                                                                                                                                                   "schema":  {
+                                                                                                                                                                  "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                              }
+                                                                                                                                               }
+                                                                                                                      }
+                                                                                                      }
+                                                                                          }
+                                                                        }
+                                                         },
+                  "/api/items/":  {
+                                      "get":  {
+                                                  "tags":  [
+                                                               "Items"
+                                                           ],
+                                                  "summary":  "Get Items",
+                                                  "description":  "Obtener todos los items (servicios)",
+                                                  "operationId":  "get_items_api_items__get",
+                                                  "responses":  {
+                                                                    "200":  {
+                                                                                "description":  "Successful Response",
+                                                                                "content":  {
+                                                                                                "application/json":  {
+                                                                                                                         "schema":  {
+                                                                                                                                        "items":  {
+                                                                                                                                                      "$ref":  "#/components/schemas/ItemResponse"
+                                                                                                                                                  },
+                                                                                                                                        "type":  "array",
+                                                                                                                                        "title":  "Response Get Items Api Items  Get"
+                                                                                                                                    }
+                                                                                                                     }
+                                                                                            }
+                                                                            }
+                                                                },
+                                                  "security":  [
+                                                                   {
+                                                                       "HTTPBearer":  [
+
+                                                                                      ]
+                                                                   }
+                                                               ]
+                                              },
+                                      "post":  {
+                                                   "tags":  [
+                                                                "Items"
+                                                            ],
+                                                   "summary":  "Create Item Endpoint",
+                                                   "description":  "Crear un nuevo item (servicio)",
+                                                   "operationId":  "create_item_endpoint_api_items__post",
+                                                   "requestBody":  {
+                                                                       "content":  {
+                                                                                       "application/json":  {
+                                                                                                                "schema":  {
+                                                                                                                               "$ref":  "#/components/schemas/ItemCreate"
+                                                                                                                           }
+                                                                                                            }
+                                                                                   },
+                                                                       "required":  true
+                                                                   },
+                                                   "responses":  {
+                                                                     "200":  {
+                                                                                 "description":  "Successful Response",
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "$ref":  "#/components/schemas/ItemResponse"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             }
+                                                                             },
+                                                                     "422":  {
+                                                                                 "description":  "Validation Error",
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             }
+                                                                             }
+                                                                 },
+                                                   "security":  [
+                                                                    {
+                                                                        "HTTPBearer":  [
+
+                                                                                       ]
+                                                                    }
+                                                                ]
+                                               }
+                                  },
+                  "/api/items/{item_id}":  {
+                                               "get":  {
+                                                           "tags":  [
+                                                                        "Items"
+                                                                    ],
+                                                           "summary":  "Get Item Endpoint",
+                                                           "description":  "Obtener un item por ID",
+                                                           "operationId":  "get_item_endpoint_api_items__item_id__get",
+                                                           "security":  [
+                                                                            {
+                                                                                "HTTPBearer":  [
+
+                                                                                               ]
+                                                                            }
+                                                                        ],
+                                                           "parameters":  [
+                                                                              {
+                                                                                  "name":  "item_id",
+                                                                                  "in":  "path",
+                                                                                  "required":  true,
+                                                                                  "schema":  {
+                                                                                                 "type":  "integer",
+                                                                                                 "title":  "Item Id"
+                                                                                             }
+                                                                              }
+                                                                          ],
+                                                           "responses":  {
+                                                                             "200":  {
+                                                                                         "description":  "Successful Response",
+                                                                                         "content":  {
+                                                                                                         "application/json":  {
+                                                                                                                                  "schema":  {
+                                                                                                                                                 "$ref":  "#/components/schemas/ItemResponse"
+                                                                                                                                             }
+                                                                                                                              }
+                                                                                                     }
+                                                                                     },
+                                                                             "422":  {
+                                                                                         "description":  "Validation Error",
+                                                                                         "content":  {
+                                                                                                         "application/json":  {
+                                                                                                                                  "schema":  {
+                                                                                                                                                 "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                             }
+                                                                                                                              }
+                                                                                                     }
+                                                                                     }
+                                                                         }
+                                                       },
+                                               "put":  {
+                                                           "tags":  [
+                                                                        "Items"
+                                                                    ],
+                                                           "summary":  "Update Item Endpoint",
+                                                           "description":  "Actualizar un item",
+                                                           "operationId":  "update_item_endpoint_api_items__item_id__put",
+                                                           "security":  [
+                                                                            {
+                                                                                "HTTPBearer":  [
+
+                                                                                               ]
+                                                                            }
+                                                                        ],
+                                                           "parameters":  [
+                                                                              {
+                                                                                  "name":  "item_id",
+                                                                                  "in":  "path",
+                                                                                  "required":  true,
+                                                                                  "schema":  {
+                                                                                                 "type":  "integer",
+                                                                                                 "title":  "Item Id"
+                                                                                             }
+                                                                              }
+                                                                          ],
+                                                           "requestBody":  {
+                                                                               "required":  true,
+                                                                               "content":  {
+                                                                                               "application/json":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "$ref":  "#/components/schemas/ItemUpdate"
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                           }
+                                                                           },
+                                                           "responses":  {
+                                                                             "200":  {
+                                                                                         "description":  "Successful Response",
+                                                                                         "content":  {
+                                                                                                         "application/json":  {
+                                                                                                                                  "schema":  {
+                                                                                                                                                 "$ref":  "#/components/schemas/ItemResponse"
+                                                                                                                                             }
+                                                                                                                              }
+                                                                                                     }
+                                                                                     },
+                                                                             "422":  {
+                                                                                         "description":  "Validation Error",
+                                                                                         "content":  {
+                                                                                                         "application/json":  {
+                                                                                                                                  "schema":  {
+                                                                                                                                                 "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                             }
+                                                                                                                              }
+                                                                                                     }
+                                                                                     }
+                                                                         }
+                                                       },
+                                               "delete":  {
+                                                              "tags":  [
+                                                                           "Items"
+                                                                       ],
+                                                              "summary":  "Delete Item Endpoint",
+                                                              "description":  "Eliminar un item",
+                                                              "operationId":  "delete_item_endpoint_api_items__item_id__delete",
+                                                              "security":  [
+                                                                               {
+                                                                                   "HTTPBearer":  [
+
+                                                                                                  ]
+                                                                               }
+                                                                           ],
+                                                              "parameters":  [
+                                                                                 {
+                                                                                     "name":  "item_id",
+                                                                                     "in":  "path",
+                                                                                     "required":  true,
+                                                                                     "schema":  {
+                                                                                                    "type":  "integer",
+                                                                                                    "title":  "Item Id"
+                                                                                                }
+                                                                                 }
+                                                                             ],
+                                                              "responses":  {
+                                                                                "204":  {
+                                                                                            "description":  "Successful Response"
+                                                                                        },
+                                                                                "422":  {
+                                                                                            "description":  "Validation Error",
+                                                                                            "content":  {
+                                                                                                            "application/json":  {
+                                                                                                                                     "schema":  {
+                                                                                                                                                    "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                }
+                                                                                                                                 }
+                                                                                                        }
+                                                                                        }
+                                                                            }
+                                                          }
+                                           },
+                  "/api/estados/":  {
+                                        "get":  {
+                                                    "tags":  [
+                                                                 "Estados"
+                                                             ],
+                                                    "summary":  "Listar Estados",
+                                                    "operationId":  "listar_estados_api_estados__get",
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "Successful Response",
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "items":  {
+                                                                                                                                                        "$ref":  "#/components/schemas/EstadoServicioResponse"
+                                                                                                                                                    },
+                                                                                                                                          "type":  "array",
+                                                                                                                                          "title":  "Response Listar Estados Api Estados  Get"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              }
+                                                                              }
+                                                                  },
+                                                    "security":  [
+                                                                     {
+                                                                         "HTTPBearer":  [
+
+                                                                                        ]
+                                                                     }
+                                                                 ]
+                                                }
+                                    },
+                  "/api/estados/{trabajo_id}":  {
+                                                    "patch":  {
+                                                                  "tags":  [
+                                                                               "Estados"
+                                                                           ],
+                                                                  "summary":  "Cambiar Estado",
+                                                                  "operationId":  "cambiar_estado_api_estados__trabajo_id__patch",
+                                                                  "security":  [
+                                                                                   {
+                                                                                       "HTTPBearer":  [
+
+                                                                                                      ]
+                                                                                   }
+                                                                               ],
+                                                                  "parameters":  [
+                                                                                     {
+                                                                                         "name":  "trabajo_id",
+                                                                                         "in":  "path",
+                                                                                         "required":  true,
+                                                                                         "schema":  {
+                                                                                                        "type":  "integer",
+                                                                                                        "title":  "Trabajo Id"
+                                                                                                    }
+                                                                                     }
+                                                                                 ],
+                                                                  "requestBody":  {
+                                                                                      "required":  true,
+                                                                                      "content":  {
+                                                                                                      "application/json":  {
+                                                                                                                               "schema":  {
+                                                                                                                                              "$ref":  "#/components/schemas/EstadoUpdate"
+                                                                                                                                          }
+                                                                                                                           }
+                                                                                                  }
+                                                                                  },
+                                                                  "responses":  {
+                                                                                    "200":  {
+                                                                                                "description":  "Successful Response",
+                                                                                                "content":  {
+                                                                                                                "application/json":  {
+                                                                                                                                         "schema":  {
+                                                                                                                                                        "$ref":  "#/components/schemas/EstadoServicioResponse"
+                                                                                                                                                    }
+                                                                                                                                     }
+                                                                                                            }
+                                                                                            },
+                                                                                    "422":  {
+                                                                                                "description":  "Validation Error",
+                                                                                                "content":  {
+                                                                                                                "application/json":  {
+                                                                                                                                         "schema":  {
+                                                                                                                                                        "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                    }
+                                                                                                                                     }
+                                                                                                            }
+                                                                                            }
+                                                                                }
+                                                              }
+                                                },
+                  "/api/estados/motocicleta/{motocicleta_id}":  {
+                                                                    "patch":  {
+                                                                                  "tags":  [
+                                                                                               "Estados"
+                                                                                           ],
+                                                                                  "summary":  "Cambiar Estado Motocicleta",
+                                                                                  "operationId":  "cambiar_estado_motocicleta_api_estados_motocicleta__motocicleta_id__patch",
+                                                                                  "security":  [
+                                                                                                   {
+                                                                                                       "HTTPBearer":  [
+
+                                                                                                                      ]
+                                                                                                   }
+                                                                                               ],
+                                                                                  "parameters":  [
+                                                                                                     {
+                                                                                                         "name":  "motocicleta_id",
+                                                                                                         "in":  "path",
+                                                                                                         "required":  true,
+                                                                                                         "schema":  {
+                                                                                                                        "type":  "integer",
+                                                                                                                        "title":  "Motocicleta Id"
+                                                                                                                    }
+                                                                                                     }
+                                                                                                 ],
+                                                                                  "requestBody":  {
+                                                                                                      "required":  true,
+                                                                                                      "content":  {
+                                                                                                                      "application/json":  {
+                                                                                                                                               "schema":  {
+                                                                                                                                                              "$ref":  "#/components/schemas/EstadoUpdate"
+                                                                                                                                                          }
+                                                                                                                                           }
+                                                                                                                  }
+                                                                                                  },
+                                                                                  "responses":  {
+                                                                                                    "200":  {
+                                                                                                                "description":  "Successful Response",
+                                                                                                                "content":  {
+                                                                                                                                "application/json":  {
+                                                                                                                                                         "schema":  {
+                                                                                                                                                                        "$ref":  "#/components/schemas/EstadoMotocicletaResponse"
+                                                                                                                                                                    }
+                                                                                                                                                     }
+                                                                                                                            }
+                                                                                                            },
+                                                                                                    "422":  {
+                                                                                                                "description":  "Validation Error",
+                                                                                                                "content":  {
+                                                                                                                                "application/json":  {
+                                                                                                                                                         "schema":  {
+                                                                                                                                                                        "$ref":  "#/components/schemas/HTTPValidationError"
+                                                                                                                                                                    }
+                                                                                                                                                     }
+                                                                                                                            }
+                                                                                                            }
+                                                                                                }
+                                                                              }
+                                                                },
+                  "/":  {
+                            "get":  {
+                                        "summary":  "Read Root",
+                                        "description":  "Endpoint raÃ­z de la API",
+                                        "operationId":  "read_root__get",
+                                        "responses":  {
+                                                          "200":  {
+                                                                      "description":  "Successful Response",
+                                                                      "content":  {
+                                                                                      "application/json":  {
+                                                                                                               "schema":  {
+
+                                                                                                                          }
+                                                                                                           }
+                                                                                  }
+                                                                  }
+                                                      }
+                                    }
+                        },
+                  "/health":  {
+                                  "get":  {
+                                              "summary":  "Health Check",
+                                              "description":  "Verificar la salud de la API",
+                                              "operationId":  "health_check_health_get",
+                                              "responses":  {
+                                                                "200":  {
+                                                                            "description":  "Successful Response",
+                                                                            "content":  {
+                                                                                            "application/json":  {
+                                                                                                                     "schema":  {
+
+                                                                                                                                }
+                                                                                                                 }
+                                                                                        }
+                                                                        }
+                                                            }
+                                          }
+                              }
+              },
+    "components":  {
+                       "schemas":  {
+                                       "EstadoMotocicletaResponse":  {
+                                                                         "properties":  {
+                                                                                            "motocicleta_id":  {
+                                                                                                                   "type":  "integer",
+                                                                                                                   "title":  "Motocicleta Id"
+                                                                                                               },
+                                                                                            "motocicleta_modelo":  {
+                                                                                                                       "type":  "string",
+                                                                                                                       "title":  "Motocicleta Modelo"
+                                                                                                                   },
+                                                                                            "piloto_nombre":  {
+                                                                                                                  "type":  "string",
+                                                                                                                  "title":  "Piloto Nombre"
+                                                                                                              },
+                                                                                            "estado":  {
+                                                                                                           "type":  "string",
+                                                                                                           "enum":  [
+                                                                                                                        "pendiente",
+                                                                                                                        "en proceso",
+                                                                                                                        "terminado"
+                                                                                                                    ],
+                                                                                                           "title":  "Estado"
+                                                                                                       }
+                                                                                        },
+                                                                         "type":  "object",
+                                                                         "required":  [
+                                                                                          "motocicleta_id",
+                                                                                          "motocicleta_modelo",
+                                                                                          "piloto_nombre",
+                                                                                          "estado"
+                                                                                      ],
+                                                                         "title":  "EstadoMotocicletaResponse"
+                                                                     },
+                                       "EstadoServicioResponse":  {
+                                                                      "properties":  {
+                                                                                         "id":  {
+                                                                                                    "type":  "integer",
+                                                                                                    "title":  "Id"
+                                                                                                },
+                                                                                         "motocicleta_id":  {
+                                                                                                                "type":  "integer",
+                                                                                                                "title":  "Motocicleta Id"
+                                                                                                            },
+                                                                                         "motocicleta_modelo":  {
+                                                                                                                    "type":  "string",
+                                                                                                                    "title":  "Motocicleta Modelo"
+                                                                                                                },
+                                                                                         "piloto_nombre":  {
+                                                                                                               "type":  "string",
+                                                                                                               "title":  "Piloto Nombre"
+                                                                                                           },
+                                                                                         "item_id":  {
+                                                                                                         "anyOf":  [
+                                                                                                                       {
+                                                                                                                           "type":  "integer"
+                                                                                                                       },
+                                                                                                                       {
+                                                                                                                           "type":  "null"
+                                                                                                                       }
+                                                                                                                   ],
+                                                                                                         "title":  "Item Id"
+                                                                                                     },
+                                                                                         "item_nombre":  {
+                                                                                                             "anyOf":  [
+                                                                                                                           {
+                                                                                                                               "type":  "string"
+                                                                                                                           },
+                                                                                                                           {
+                                                                                                                               "type":  "null"
+                                                                                                                           }
+                                                                                                                       ],
+                                                                                                             "title":  "Item Nombre"
+                                                                                                         },
+                                                                                         "estado":  {
+                                                                                                        "type":  "string",
+                                                                                                        "enum":  [
+                                                                                                                     "pendiente",
+                                                                                                                     "en proceso",
+                                                                                                                     "terminado"
+                                                                                                                 ],
+                                                                                                        "title":  "Estado"
+                                                                                                    },
+                                                                                         "fecha_creacion":  {
+                                                                                                                "type":  "string",
+                                                                                                                "format":  "date-time",
+                                                                                                                "title":  "Fecha Creacion"
+                                                                                                            },
+                                                                                         "fecha_actualizacion":  {
+                                                                                                                     "anyOf":  [
+                                                                                                                                   {
+                                                                                                                                       "type":  "string",
+                                                                                                                                       "format":  "date-time"
+                                                                                                                                   },
+                                                                                                                                   {
+                                                                                                                                       "type":  "null"
+                                                                                                                                   }
+                                                                                                                               ],
+                                                                                                                     "title":  "Fecha Actualizacion"
+                                                                                                                 },
+                                                                                         "tiene_servicio":  {
+                                                                                                                "type":  "boolean",
+                                                                                                                "title":  "Tiene Servicio",
+                                                                                                                "default":  true
+                                                                                                            },
+                                                                                         "es_estado_general":  {
+                                                                                                                   "type":  "boolean",
+                                                                                                                   "title":  "Es Estado General",
+                                                                                                                   "default":  false
+                                                                                                               }
+                                                                                     },
+                                                                      "type":  "object",
+                                                                      "required":  [
+                                                                                       "id",
+                                                                                       "motocicleta_id",
+                                                                                       "motocicleta_modelo",
+                                                                                       "piloto_nombre",
+                                                                                       "estado",
+                                                                                       "fecha_creacion"
+                                                                                   ],
+                                                                      "title":  "EstadoServicioResponse"
+                                                                  },
+                                       "EstadoUpdate":  {
+                                                            "properties":  {
+                                                                               "estado":  {
+                                                                                              "type":  "string",
+                                                                                              "enum":  [
+                                                                                                           "pendiente",
+                                                                                                           "en proceso",
+                                                                                                           "terminado"
+                                                                                                       ],
+                                                                                              "title":  "Estado"
+                                                                                          }
+                                                                           },
+                                                            "type":  "object",
+                                                            "required":  [
+                                                                             "estado"
+                                                                         ],
+                                                            "title":  "EstadoUpdate"
+                                                        },
+                                       "HTTPValidationError":  {
+                                                                   "properties":  {
+                                                                                      "detail":  {
+                                                                                                     "items":  {
+                                                                                                                   "$ref":  "#/components/schemas/ValidationError"
+                                                                                                               },
+                                                                                                     "type":  "array",
+                                                                                                     "title":  "Detail"
+                                                                                                 }
+                                                                                  },
+                                                                   "type":  "object",
+                                                                   "title":  "HTTPValidationError"
+                                                               },
+                                       "ItemCreate":  {
+                                                          "properties":  {
+                                                                             "nombre_item":  {
+                                                                                                 "type":  "string",
+                                                                                                 "title":  "Nombre Item"
+                                                                                             },
+                                                                             "descripcion":  {
+                                                                                                 "anyOf":  [
+                                                                                                               {
+                                                                                                                   "type":  "string"
+                                                                                                               },
+                                                                                                               {
+                                                                                                                   "type":  "null"
+                                                                                                               }
+                                                                                                           ],
+                                                                                                 "title":  "Descripcion"
+                                                                                             },
+                                                                             "precio":  {
+                                                                                            "anyOf":  [
+                                                                                                          {
+                                                                                                              "type":  "string"
+                                                                                                          },
+                                                                                                          {
+                                                                                                              "type":  "null"
+                                                                                                          }
+                                                                                                      ],
+                                                                                            "title":  "Precio"
+                                                                                        }
+                                                                         },
+                                                          "type":  "object",
+                                                          "required":  [
+                                                                           "nombre_item"
+                                                                       ],
+                                                          "title":  "ItemCreate"
+                                                      },
+                                       "ItemResponse":  {
+                                                            "properties":  {
+                                                                               "id":  {
+                                                                                          "type":  "integer",
+                                                                                          "title":  "Id"
+                                                                                      },
+                                                                               "nombre_item":  {
+                                                                                                   "type":  "string",
+                                                                                                   "title":  "Nombre Item"
+                                                                                               },
+                                                                               "descripcion":  {
+                                                                                                   "anyOf":  [
+                                                                                                                 {
+                                                                                                                     "type":  "string"
+                                                                                                                 },
+                                                                                                                 {
+                                                                                                                     "type":  "null"
+                                                                                                                 }
+                                                                                                             ],
+                                                                                                   "title":  "Descripcion"
+                                                                                               },
+                                                                               "precio":  {
+                                                                                              "anyOf":  [
+                                                                                                            {
+                                                                                                                "type":  "string"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type":  "null"
+                                                                                                            }
+                                                                                                        ],
+                                                                                              "title":  "Precio"
+                                                                                          },
+                                                                               "fecha_creacion":  {
+                                                                                                      "type":  "string",
+                                                                                                      "format":  "date-time",
+                                                                                                      "title":  "Fecha Creacion"
+                                                                                                  }
+                                                                           },
+                                                            "type":  "object",
+                                                            "required":  [
+                                                                             "id",
+                                                                             "nombre_item",
+                                                                             "descripcion",
+                                                                             "precio",
+                                                                             "fecha_creacion"
+                                                                         ],
+                                                            "title":  "ItemResponse"
+                                                        },
+                                       "ItemUpdate":  {
+                                                          "properties":  {
+                                                                             "nombre_item":  {
+                                                                                                 "anyOf":  [
+                                                                                                               {
+                                                                                                                   "type":  "string"
+                                                                                                               },
+                                                                                                               {
+                                                                                                                   "type":  "null"
+                                                                                                               }
+                                                                                                           ],
+                                                                                                 "title":  "Nombre Item"
+                                                                                             },
+                                                                             "descripcion":  {
+                                                                                                 "anyOf":  [
+                                                                                                               {
+                                                                                                                   "type":  "string"
+                                                                                                               },
+                                                                                                               {
+                                                                                                                   "type":  "null"
+                                                                                                               }
+                                                                                                           ],
+                                                                                                 "title":  "Descripcion"
+                                                                                             },
+                                                                             "precio":  {
+                                                                                            "anyOf":  [
+                                                                                                          {
+                                                                                                              "type":  "string"
+                                                                                                          },
+                                                                                                          {
+                                                                                                              "type":  "null"
+                                                                                                          }
+                                                                                                      ],
+                                                                                            "title":  "Precio"
+                                                                                        }
+                                                                         },
+                                                          "type":  "object",
+                                                          "title":  "ItemUpdate"
+                                                      },
+                                       "MotocicletaCreate":  {
+                                                                 "properties":  {
+                                                                                    "piloto_id":  {
+                                                                                                      "type":  "integer",
+                                                                                                      "title":  "Piloto Id"
+                                                                                                  },
+                                                                                    "modelo":  {
+                                                                                                   "type":  "string",
+                                                                                                   "title":  "Modelo"
+                                                                                               },
+                                                                                    "aÃ±o":  {
+                                                                                                 "type":  "integer",
+                                                                                                 "title":  "AÃ±o"
+                                                                                             },
+                                                                                    "servicio_ids":  {
+                                                                                                         "items":  {
+                                                                                                                       "type":  "integer"
+                                                                                                                   },
+                                                                                                         "type":  "array",
+                                                                                                         "title":  "Servicio Ids"
+                                                                                                     },
+                                                                                    "trabajos_reparacion":  {
+                                                                                                                "items":  {
+                                                                                                                              "type":  "string"
+                                                                                                                          },
+                                                                                                                "type":  "array",
+                                                                                                                "title":  "Trabajos Reparacion"
+                                                                                                            }
+                                                                                },
+                                                                 "type":  "object",
+                                                                 "required":  [
+                                                                                  "piloto_id",
+                                                                                  "modelo",
+                                                                                  "aÃ±o"
+                                                                              ],
+                                                                 "title":  "MotocicletaCreate"
+                                                             },
+                                       "MotocicletaResponse":  {
+                                                                   "properties":  {
+                                                                                      "id":  {
+                                                                                                 "type":  "integer",
+                                                                                                 "title":  "Id"
+                                                                                             },
+                                                                                      "piloto_id":  {
+                                                                                                        "type":  "integer",
+                                                                                                        "title":  "Piloto Id"
+                                                                                                    },
+                                                                                      "modelo":  {
+                                                                                                     "type":  "string",
+                                                                                                     "title":  "Modelo"
+                                                                                                 },
+                                                                                      "aÃ±o":  {
+                                                                                                   "type":  "integer",
+                                                                                                   "title":  "AÃ±o"
+                                                                                               },
+                                                                                      "hora_ingreso":  {
+                                                                                                           "type":  "string",
+                                                                                                           "format":  "date-time",
+                                                                                                           "title":  "Hora Ingreso"
+                                                                                                       }
+                                                                                  },
+                                                                   "type":  "object",
+                                                                   "required":  [
+                                                                                    "id",
+                                                                                    "piloto_id",
+                                                                                    "modelo",
+                                                                                    "aÃ±o",
+                                                                                    "hora_ingreso"
+                                                                                ],
+                                                                   "title":  "MotocicletaResponse"
+                                                               },
+                                       "MotocicletaUpdate":  {
+                                                                 "properties":  {
+                                                                                    "modelo":  {
+                                                                                                   "anyOf":  [
+                                                                                                                 {
+                                                                                                                     "type":  "string"
+                                                                                                                 },
+                                                                                                                 {
+                                                                                                                     "type":  "null"
+                                                                                                                 }
+                                                                                                             ],
+                                                                                                   "title":  "Modelo"
+                                                                                               },
+                                                                                    "aÃ±o":  {
+                                                                                                 "anyOf":  [
+                                                                                                               {
+                                                                                                                   "type":  "integer"
+                                                                                                               },
+                                                                                                               {
+                                                                                                                   "type":  "null"
+                                                                                                               }
+                                                                                                           ],
+                                                                                                 "title":  "AÃ±o"
+                                                                                             }
+                                                                                },
+                                                                 "type":  "object",
+                                                                 "title":  "MotocicletaUpdate"
+                                                             },
+                                       "PilotoCreate":  {
+                                                            "properties":  {
+                                                                               "nombre":  {
+                                                                                              "type":  "string",
+                                                                                              "title":  "Nombre"
+                                                                                          },
+                                                                               "telefono":  {
+                                                                                                "type":  "string",
+                                                                                                "title":  "Telefono"
+                                                                                            },
+                                                                               "email":  {
+                                                                                             "type":  "string",
+                                                                                             "format":  "email",
+                                                                                             "title":  "Email"
+                                                                                         }
+                                                                           },
+                                                            "type":  "object",
+                                                            "required":  [
+                                                                             "nombre",
+                                                                             "telefono",
+                                                                             "email"
+                                                                         ],
+                                                            "title":  "PilotoCreate"
+                                                        },
+                                       "PilotoResponse":  {
+                                                              "properties":  {
+                                                                                 "id":  {
+                                                                                            "type":  "integer",
+                                                                                            "title":  "Id"
+                                                                                        },
+                                                                                 "nombre":  {
+                                                                                                "type":  "string",
+                                                                                                "title":  "Nombre"
+                                                                                            },
+                                                                                 "telefono":  {
+                                                                                                  "type":  "string",
+                                                                                                  "title":  "Telefono"
+                                                                                              },
+                                                                                 "email":  {
+                                                                                               "type":  "string",
+                                                                                               "title":  "Email"
+                                                                                           },
+                                                                                 "fecha_creacion":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time",
+                                                                                                        "title":  "Fecha Creacion"
+                                                                                                    }
+                                                                             },
+                                                              "type":  "object",
+                                                              "required":  [
+                                                                               "id",
+                                                                               "nombre",
+                                                                               "telefono",
+                                                                               "email",
+                                                                               "fecha_creacion"
+                                                                           ],
+                                                              "title":  "PilotoResponse"
+                                                          },
+                                       "PilotoUpdate":  {
+                                                            "properties":  {
+                                                                               "nombre":  {
+                                                                                              "anyOf":  [
+                                                                                                            {
+                                                                                                                "type":  "string"
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "type":  "null"
+                                                                                                            }
+                                                                                                        ],
+                                                                                              "title":  "Nombre"
+                                                                                          },
+                                                                               "telefono":  {
+                                                                                                "anyOf":  [
+                                                                                                              {
+                                                                                                                  "type":  "string"
+                                                                                                              },
+                                                                                                              {
+                                                                                                                  "type":  "null"
+                                                                                                              }
+                                                                                                          ],
+                                                                                                "title":  "Telefono"
+                                                                                            },
+                                                                               "email":  {
+                                                                                             "anyOf":  [
+                                                                                                           {
+                                                                                                               "type":  "string",
+                                                                                                               "format":  "email"
+                                                                                                           },
+                                                                                                           {
+                                                                                                               "type":  "null"
+                                                                                                           }
+                                                                                                       ],
+                                                                                             "title":  "Email"
+                                                                                         }
+                                                                           },
+                                                            "type":  "object",
+                                                            "title":  "PilotoUpdate"
+                                                        },
+                                       "Token":  {
+                                                     "properties":  {
+                                                                        "access_token":  {
+                                                                                             "type":  "string",
+                                                                                             "title":  "Access Token"
+                                                                                         },
+                                                                        "token_type":  {
+                                                                                           "type":  "string",
+                                                                                           "title":  "Token Type"
+                                                                                       }
+                                                                    },
+                                                     "type":  "object",
+                                                     "required":  [
+                                                                      "access_token",
+                                                                      "token_type"
+                                                                  ],
+                                                     "title":  "Token"
+                                                 },
+                                       "UsuarioCreate":  {
+                                                             "properties":  {
+                                                                                "email":  {
+                                                                                              "type":  "string",
+                                                                                              "format":  "email",
+                                                                                              "title":  "Email"
+                                                                                          },
+                                                                                "rol":  {
+                                                                                            "type":  "string",
+                                                                                            "title":  "Rol"
+                                                                                        },
+                                                                                "contraseÃ±a":  {
+                                                                                                    "type":  "string",
+                                                                                                    "title":  "ContraseÃ±a"
+                                                                                                }
+                                                                            },
+                                                             "type":  "object",
+                                                             "required":  [
+                                                                              "email",
+                                                                              "rol",
+                                                                              "contraseÃ±a"
+                                                                          ],
+                                                             "title":  "UsuarioCreate"
+                                                         },
+                                       "UsuarioLogin":  {
+                                                            "properties":  {
+                                                                               "email":  {
+                                                                                             "type":  "string",
+                                                                                             "format":  "email",
+                                                                                             "title":  "Email"
+                                                                                         },
+                                                                               "contraseÃ±a":  {
+                                                                                                   "type":  "string",
+                                                                                                   "title":  "ContraseÃ±a"
+                                                                                               }
+                                                                           },
+                                                            "type":  "object",
+                                                            "required":  [
+                                                                             "email",
+                                                                             "contraseÃ±a"
+                                                                         ],
+                                                            "title":  "UsuarioLogin"
+                                                        },
+                                       "UsuarioResponse":  {
+                                                               "properties":  {
+                                                                                  "id":  {
+                                                                                             "type":  "integer",
+                                                                                             "title":  "Id"
+                                                                                         },
+                                                                                  "email":  {
+                                                                                                "type":  "string",
+                                                                                                "title":  "Email"
+                                                                                            },
+                                                                                  "rol":  {
+                                                                                              "type":  "string",
+                                                                                              "title":  "Rol"
+                                                                                          },
+                                                                                  "fecha_creacion":  {
+                                                                                                         "type":  "string",
+                                                                                                         "format":  "date-time",
+                                                                                                         "title":  "Fecha Creacion"
+                                                                                                     }
+                                                                              },
+                                                               "type":  "object",
+                                                               "required":  [
+                                                                                "id",
+                                                                                "email",
+                                                                                "rol",
+                                                                                "fecha_creacion"
+                                                                            ],
+                                                               "title":  "UsuarioResponse"
+                                                           },
+                                       "ValidationError":  {
+                                                               "properties":  {
+                                                                                  "loc":  {
+                                                                                              "items":  {
+                                                                                                            "anyOf":  [
+                                                                                                                          {
+                                                                                                                              "type":  "string"
+                                                                                                                          },
+                                                                                                                          {
+                                                                                                                              "type":  "integer"
+                                                                                                                          }
+                                                                                                                      ]
+                                                                                                        },
+                                                                                              "type":  "array",
+                                                                                              "title":  "Location"
+                                                                                          },
+                                                                                  "msg":  {
+                                                                                              "type":  "string",
+                                                                                              "title":  "Message"
+                                                                                          },
+                                                                                  "type":  {
+                                                                                               "type":  "string",
+                                                                                               "title":  "Error Type"
+                                                                                           }
+                                                                              },
+                                                               "type":  "object",
+                                                               "required":  [
+                                                                                "loc",
+                                                                                "msg",
+                                                                                "type"
+                                                                            ],
+                                                               "title":  "ValidationError"
+                                                           }
+                                   },
+                       "securitySchemes":  {
+                                               "HTTPBearer":  {
+                                                                  "type":  "http",
+                                                                  "scheme":  "bearer"
+                                                              }
+                                           }
+                   }
+}
