@@ -6,6 +6,7 @@ import { confirmDialog } from '../utils/sweetAlert';
 
 const Pilotos = () => {
   const [pilotos, setPilotos] = useState([]);
+  const [motocicletas, setMotocicletas] = useState([]);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
