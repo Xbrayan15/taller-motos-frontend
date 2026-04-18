@@ -16,7 +16,9 @@ const Motocicletas = () => {
     modelo: '',
     año: new Date().getFullYear(),
     servicio_ids: [],
+    trabajos_reparacion: [],
   });
+  const [nuevoTrabajo, setNuevoTrabajo] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -68,6 +70,7 @@ const Motocicletas = () => {
         modelo: moto.modelo,
         año: moto.año,
         servicio_ids: [],
+        trabajos_reparacion: [],
       });
     } else {
       setEditingId(null);
@@ -76,8 +79,10 @@ const Motocicletas = () => {
         modelo: '',
         año: new Date().getFullYear(),
         servicio_ids: [],
+        trabajos_reparacion: [],
       });
     }
+    setNuevoTrabajo('');
     setShowModal(true);
   };
 
@@ -89,7 +94,9 @@ const Motocicletas = () => {
       modelo: '',
       año: new Date().getFullYear(),
       servicio_ids: [],
+      trabajos_reparacion: [],
     });
+    setNuevoTrabajo('');
   };
 
   const toggleServicio = (servicioId) => {
@@ -104,6 +111,26 @@ const Motocicletas = () => {
     });
   };
 
+  const agregarTrabajoManual = () => {
+    const detalle = nuevoTrabajo.trim();
+    if (!detalle) {
+      return;
+    }
+
+    setFormData((currentData) => ({
+      ...currentData,
+      trabajos_reparacion: [...currentData.trabajos_reparacion, detalle],
+    }));
+    setNuevoTrabajo('');
+  };
+
+  const quitarTrabajoManual = (index) => {
+    setFormData((currentData) => ({
+      ...currentData,
+      trabajos_reparacion: currentData.trabajos_reparacion.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -112,6 +139,7 @@ const Motocicletas = () => {
         piloto_id: Number(formData.piloto_id),
         año: Number(formData.año),
         servicio_ids: formData.servicio_ids,
+        trabajos_reparacion: formData.trabajos_reparacion,
       };
 
       if (editingId) {
@@ -345,6 +373,90 @@ const Motocicletas = () => {
                   {editingId
                     ? 'En edición, solo se agregan servicios nuevos y se conservan los ya registrados.'
                     : 'Los servicios seleccionados se crearán automáticamente con estado pendiente.'}
+                </p>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  {editingId
+                    ? 'Agregar reparación manual'
+                    : 'Trabajos manuales de reparación'}
+                </label>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input
+                    type="text"
+                    value={nuevoTrabajo}
+                    onChange={(e) => setNuevoTrabajo(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        agregarTrabajoManual();
+                      }
+                    }}
+                    placeholder="Ej: Cambio de guaya de clutch"
+                  />
+                  <button
+                    type="button"
+                    className="btn"
+                    style={{
+                      background: '#111827',
+                      color: 'white',
+                      border: 'none',
+                      padding: '10px 14px',
+                    }}
+                    onClick={agregarTrabajoManual}
+                  >
+                    Agregar
+                  </button>
+                </div>
+
+                {formData.trabajos_reparacion.length > 0 && (
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '8px',
+                    }}
+                  >
+                    {formData.trabajos_reparacion.map((trabajo, index) => (
+                      <span
+                        key={`${trabajo}-${index}`}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          background: '#f3f4f6',
+                          border: '1px solid #d1d5db',
+                          borderRadius: '999px',
+                          padding: '6px 10px',
+                          fontSize: '13px',
+                        }}
+                      >
+                        {trabajo}
+                        <button
+                          type="button"
+                          onClick={() => quitarTrabajoManual(index)}
+                          style={{
+                            border: 'none',
+                            background: 'transparent',
+                            cursor: 'pointer',
+                            color: '#6b7280',
+                            lineHeight: 1,
+                          }}
+                          aria-label={`Quitar ${trabajo}`}
+                        >
+                          <X size={14} />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <p style={{ color: '#6b7280', marginTop: '8px', fontSize: '13px' }}>
+                  {editingId
+                    ? 'Cada trabajo manual agregado se registra como nueva reparación pendiente para esta moto.'
+                    : 'Puedes registrar reparaciones manuales además de los servicios del catálogo.'}
                 </p>
               </div>
 
