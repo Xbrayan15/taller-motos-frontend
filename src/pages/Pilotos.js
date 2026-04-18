@@ -6,10 +6,21 @@ import { confirmDialog } from '../utils/sweetAlert';
 
 const Pilotos = () => {
   const [pilotos, setPilotos] = useState([]);
+  const [motocicletas, setMotocicletas] = useState([]);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showServicioModal, setShowServicioModal] = useState(false);
+  const [showPilotosRegistrados, setShowPilotosRegistrados] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [servicioForm, setServicioForm] = useState({
+    piloto_id: '',
+    motocicleta_id: '',
+  });
+  const [tipoServicio, setTipoServicio] = useState('');
+  const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
+  const [trabajosManual, setTrabajosManual] = useState(['']);
+  const [nuevoTrabajoManual, setNuevoTrabajoManual] = useState('');
   const [formData, setFormData] = useState({
     nombre: '',
     telefono: '',
@@ -31,6 +42,7 @@ const Pilotos = () => {
   useEffect(() => {
     fetchPilotos();
     fetchItems();
+    fetchMotocicletas();
   }, []);
 
   const fetchPilotos = async () => {
@@ -52,6 +64,15 @@ const Pilotos = () => {
       setItems(response.data || []);
     } catch (err) {
       console.error('Error al cargar servicios');
+    }
+  };
+
+  const fetchMotocicletas = async () => {
+    try {
+      const response = await API.get(CONFIG.API_ENDPOINTS.MOTOCICLETAS);
+      setMotocicletas(response.data || []);
+    } catch (err) {
+      console.error('Error al cargar motocicletas');
     }
   };
 
@@ -88,6 +109,28 @@ const Pilotos = () => {
     setCustomTrabajos(['']);
   };
 
+  const handleOpenServicioModal = () => {
+    setError('');
+    setSuccess('');
+    setServicioForm({ piloto_id: '', motocicleta_id: '' });
+    setTipoServicio('');
+    setServiciosSeleccionados([]);
+    setTrabajosManual(['']);
+    setNuevoTrabajoManual('');
+    setShowPilotosRegistrados(false);
+    setShowServicioModal(true);
+  };
+
+  const handleCloseServicioModal = () => {
+    setShowServicioModal(false);
+    setServicioForm({ piloto_id: '', motocicleta_id: '' });
+    setTipoServicio('');
+    setServiciosSeleccionados([]);
+    setTrabajosManual(['']);
+    setNuevoTrabajoManual('');
+    setShowPilotosRegistrados(false);
+  };
+
   const handleTipoIngreso = (tipo) => {
     if (tipoIngreso === tipo) {
       setTipoIngreso('');
@@ -116,6 +159,14 @@ const Pilotos = () => {
     ));
   };
 
+  const toggleServicioSeleccionado = (itemId) => {
+    setServiciosSeleccionados((current) => (
+      current.includes(itemId)
+        ? current.filter((id) => id !== itemId)
+        : [...current, itemId]
+    ));
+  };
+
   const updateTrabajo = (index, value) => {
     setCustomTrabajos((current) => current.map((trabajo, i) => (i === index ? value : trabajo)));
   };
@@ -129,6 +180,78 @@ const Pilotos = () => {
       const updated = current.filter((_, i) => i !== index);
       return updated.length ? updated : [''];
     });
+  };
+
+  const agregarTrabajoManualServicio = () => {
+    const detalle = nuevoTrabajoManual.trim();
+    if (!detalle) {
+      return;
+    }
+
+    setTrabajosManual((current) => [...current, detalle]);
+    setNuevoTrabajoManual('');
+  };
+
+  const quitarTrabajoManualServicio = (index) => {
+    setTrabajosManual((current) => {
+      const updated = current.filter((_, i) => i !== index);
+      return updated.length ? updated : [''];
+    });
+  };
+
+  const motocicletasDelPiloto = servicioForm.piloto_id
+    ? motocicletas.filter((motocicleta) => motocicleta.piloto_id === Number(servicioForm.piloto_id))
+    : [];
+
+  const handleSubmitServicio = async (event) => {
+    event.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!servicioForm.piloto_id) {
+      setError('Selecciona un piloto registrado');
+      return;
+    }
+
+    if (!servicioForm.motocicleta_id) {
+      setError('Selecciona una motocicleta del piloto');
+      return;
+    }
+
+    if (!tipoServicio) {
+      setError('Selecciona si el servicio es de aislamiento o reparación');
+      return;
+    }
+
+    const payload = {
+      servicio_ids: tipoServicio === 'aislamiento' ? serviciosSeleccionados : [],
+      trabajos_reparacion:
+        tipoServicio === 'reparacion'
+          ? trabajosManual.map((trabajo) => trabajo.trim()).filter(Boolean)
+          : [],
+    };
+
+    if (tipoServicio === 'aislamiento' && payload.servicio_ids.length === 0) {
+      setError('Selecciona al menos un servicio de aislamiento');
+      return;
+    }
+
+    if (tipoServicio === 'reparacion' && payload.trabajos_reparacion.length === 0) {
+      setError('Agrega al menos un trabajo manual de reparación');
+      return;
+    }
+
+    try {
+      await API.put(
+        `${CONFIG.API_ENDPOINTS.MOTOCICLETAS}/${servicioForm.motocicleta_id}`,
+        payload
+      );
+      setSuccess('Servicio agregado correctamente');
+      handleCloseServicioModal();
+      fetchMotocicletas();
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Error al agregar servicio');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -225,13 +348,22 @@ const Pilotos = () => {
       <div className="card">
         <div className="card-header">
           <h2 className="card-title">Gestión de Pilotos</h2>
-          <button
-            className="btn btn-primary"
-            onClick={() => handleOpenModal()}
-          >
-            <Plus size={20} />
-            Nuevo Piloto
-          </button>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <button
+              className="btn btn-secondary"
+              onClick={handleOpenServicioModal}
+            >
+              <Plus size={20} />
+              Nuevo Servicio
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => handleOpenModal()}
+            >
+              <Plus size={20} />
+              Nuevo Piloto
+            </button>
+          </div>
         </div>
 
         {loading ? (
@@ -479,6 +611,199 @@ const Pilotos = () => {
 
               <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
                 {editingId ? 'Actualizar' : 'Crear'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showServicioModal && (
+        <div className="modal-overlay" onClick={handleCloseServicioModal}>
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '760px', width: '100%' }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3>Nuevo Servicio</h3>
+              <button
+                onClick={handleCloseServicioModal}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px' }}
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmitServicio}>
+              <div className="form-group">
+                <label>1. Pilotos registrados</label>
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => setShowPilotosRegistrados((current) => !current)}
+                  style={{ marginBottom: '10px' }}
+                >
+                  {showPilotosRegistrados ? 'Ocultar pilotos' : 'Ver pilotos registrados'}
+                </button>
+
+                {showPilotosRegistrados && (
+                  <div className="service-selector service-selector-compact" style={{ maxHeight: '220px', overflowY: 'auto' }}>
+                    {pilotos.length === 0 ? (
+                      <p style={{ color: '#6b7280' }}>No hay pilotos registrados.</p>
+                    ) : (
+                      pilotos.map((piloto) => (
+                        <label key={piloto.id} className="service-option">
+                          <input
+                            type="radio"
+                            name="piloto-servicio"
+                            checked={String(servicioForm.piloto_id) === String(piloto.id)}
+                            onChange={() =>
+                              setServicioForm({ piloto_id: piloto.id, motocicleta_id: '' })
+                            }
+                          />
+                          <span>
+                            <strong>{piloto.nombre}</strong>
+                            <small>{piloto.email}</small>
+                          </span>
+                        </label>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>Motocicleta del piloto</label>
+                <select
+                  value={servicioForm.motocicleta_id}
+                  onChange={(e) =>
+                    setServicioForm((current) => ({
+                      ...current,
+                      motocicleta_id: e.target.value,
+                    }))
+                  }
+                  disabled={!servicioForm.piloto_id}
+                  required
+                >
+                  <option value="">Seleccionar motocicleta</option>
+                  {motocicletasDelPiloto.map((motocicleta) => (
+                    <option key={motocicleta.id} value={motocicleta.id}>
+                      {motocicleta.modelo} - {motocicleta.año}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>2. Tipo de servicio</label>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    className={`btn ${tipoServicio === 'aislamiento' ? 'btn-primary' : 'btn-outline'}`}
+                    onClick={() => {
+                      setTipoServicio('aislamiento');
+                      setTrabajosManual(['']);
+                      setNuevoTrabajoManual('');
+                    }}
+                  >
+                    Aislamiento
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn ${tipoServicio === 'reparacion' ? 'btn-primary' : 'btn-outline'}`}
+                    onClick={() => {
+                      setTipoServicio('reparacion');
+                      setServiciosSeleccionados([]);
+                    }}
+                  >
+                    Reparación
+                  </button>
+                </div>
+              </div>
+
+              {tipoServicio === 'aislamiento' && (
+                <div className="form-group">
+                  <label>Servicios ya agregados</label>
+                  {items.length === 0 ? (
+                    <p style={{ color: '#6b7280' }}>No hay servicios disponibles.</p>
+                  ) : (
+                    <div className="service-selector service-selector-compact">
+                      {items.map((item) => (
+                        <label key={item.id} className="service-option">
+                          <input
+                            type="checkbox"
+                            className="service-checkbox"
+                            checked={serviciosSeleccionados.includes(item.id)}
+                            onChange={() => toggleServicioSeleccionado(item.id)}
+                          />
+                          <span>
+                            <strong>{item.nombre_item}</strong>
+                            <small>{item.descripcion || 'Servicio del catálogo'}</small>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {tipoServicio === 'reparacion' && (
+                <div className="form-group">
+                  <label>Reparación manual</label>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
+                    <input
+                      type="text"
+                      value={nuevoTrabajoManual}
+                      onChange={(e) => setNuevoTrabajoManual(e.target.value)}
+                      placeholder="Ej: Cambio de balineras"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          agregarTrabajoManualServicio();
+                        }
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={agregarTrabajoManualServicio}
+                    >
+                      Agregar
+                    </button>
+                  </div>
+
+                  <div style={{ display: 'grid', gap: '8px' }}>
+                    {trabajosManual.map((trabajo, index) => (
+                      <div
+                        key={`${trabajo}-${index}`}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '10px',
+                          padding: '10px 12px',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '12px',
+                          background: '#f9fafb',
+                        }}
+                      >
+                        <span>{trabajo}</span>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={() => quitarTrabajoManualServicio(index)}
+                          style={{ padding: '8px 12px' }}
+                        >
+                          Quitar
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+                Guardar servicio
               </button>
             </form>
           </div>
