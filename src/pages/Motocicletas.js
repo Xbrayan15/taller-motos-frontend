@@ -309,36 +309,44 @@ const Motocicletas = () => {
                 />
               </div>
 
-              {!editingId && (
-                <div className="form-group">
-                  <label>Servicios disponibles (selecciona cuales aplican)</label>
-                  {items.length === 0 ? (
-                    <p style={{ color: '#6b7280', marginTop: '8px' }}>
-                      No hay servicios creados todavía. Ve a la sección de servicios para registrarlos.
-                    </p>
-                  ) : (
-                    <div className="service-selector service-selector-compact">
-                      {items.map((item) => (
-                        <label key={item.id} className="service-option">
-                          <input
-                            type="checkbox"
-                            className="service-checkbox"
-                            checked={formData.servicio_ids.includes(item.id)}
-                            onChange={() => toggleServicio(item.id)}
-                          />
-                          <span>
-                            <strong>{item.nombre_item}</strong>
-                            <small>Servicio del catálogo</small>
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                  <p style={{ color: '#6b7280', marginTop: '8px', fontSize: '13px' }}>
-                    Los servicios seleccionados se crearán automáticamente con estado pendiente.
+              <div className="form-group">
+                <label>
+                  {editingId
+                    ? 'Agregar servicios nuevos'
+                    : 'Servicios disponibles (selecciona cuales aplican)'}
+                </label>
+                {items.length === 0 ? (
+                  <p style={{ color: '#6b7280', marginTop: '8px' }}>
+                    No hay servicios creados todavía. Ve a la sección de servicios para registrarlos.
                   </p>
-                </div>
-              )}
+                ) : (
+                  <div className="service-selector service-selector-compact">
+                    {items.map((item) => (
+                      <label key={item.id} className="service-option">
+                        <input
+                          type="checkbox"
+                          className="service-checkbox"
+                          checked={formData.servicio_ids.includes(item.id)}
+                          onChange={() => toggleServicio(item.id)}
+                        />
+                        <span>
+                          <strong>{item.nombre_item}</strong>
+                          <small>
+                            {editingId
+                              ? 'Se agrega a la moto existente'
+                              : 'Servicio del catálogo'}
+                          </small>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+                <p style={{ color: '#6b7280', marginTop: '8px', fontSize: '13px' }}>
+                  {editingId
+                    ? 'En edición, solo se agregan servicios nuevos y se conservan los ya registrados.'
+                    : 'Los servicios seleccionados se crearán automáticamente con estado pendiente.'}
+                </p>
+              </div>
 
               <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
                 {editingId ? 'Actualizar' : 'Crear'}
