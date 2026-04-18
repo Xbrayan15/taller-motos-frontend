@@ -25,6 +25,9 @@ const Pilotos = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const nombresSugeridos = [...new Set(pilotos.map((piloto) => piloto.nombre.trim()).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b));
+
   useEffect(() => {
     fetchPilotos();
     fetchItems();
@@ -315,6 +318,7 @@ const Pilotos = () => {
                 <label>Nombre</label>
                 <input
                   type="text"
+                  list="pilotos-registrados"
                   value={formData.nombre}
                   onChange={(e) =>
                     setFormData({ ...formData, nombre: e.target.value })
@@ -322,6 +326,16 @@ const Pilotos = () => {
                   placeholder="Ej: Juan Perez"
                   required
                 />
+                <datalist id="pilotos-registrados">
+                  {nombresSugeridos.map((nombre) => (
+                    <option key={nombre} value={nombre} />
+                  ))}
+                </datalist>
+                {!editingId && nombresSugeridos.length > 0 && (
+                  <p style={{ color: '#6b7280', marginTop: '8px', fontSize: '13px' }}>
+                    Sugerencias: se muestran nombres ya registrados mientras escribes.
+                  </p>
+                )}
               </div>
 
               <div className="form-group">
